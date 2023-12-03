@@ -17,8 +17,9 @@ export const fetchData = async (keyword) => {
   try {
     // Make the API request using await
     const response = await axios.request(options);
-    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error(error);
+    throw Error(error);
   }
 };

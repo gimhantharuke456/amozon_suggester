@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { Col, Card, Button, message } from "antd";
+import { addToCart } from "../services/add_to_cart";
+import state from "../store";
 
 const ProductCard = ({ product }) => {
-  const [cart, setCart] = useState([]);
-
-  const handleAddToCart = () => {
-    const existingProduct = cart.find((item) => item.ASIN === product.ASIN);
-    if (existingProduct) {
-      message.warning("Product is already in the cart.");
-    } else {
-      setCart([...cart, product]);
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(product, 1);
+      state.cart.push({
+        product: product,
+        quantity: 1,
+        searchTag: localStorage.getItem("search_tag"),
+        lowest_price: (Number(product.price.replace("$", "")) / 100) * 90,
+      });
       message.success("Product added to the cart.");
+    } catch (error) {
+      message.error(`${error}`);
     }
   };
 

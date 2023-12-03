@@ -5,8 +5,11 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  where,
+  query,
+  setDoc,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
 
 export const getCartItems = async () => {
   try {
@@ -24,12 +27,13 @@ export const getCartItems = async () => {
 export const addToCart = async (productId, quantity) => {
   try {
     const cartRef = collection(db, "cart");
-    const existingCartItem = await getDocs(
-      cartRef.where("productId", "==", productId)
+    const q = query(
+      cartRef,
+      where("productId", "==", productId + " " + auth.currentUser.uid)
     );
+    const existingCartItem = await getDocs(q);
 
     if (!existingCartItem.empty) {
-      // Product already in the cart, update the quantity
       const existingDoc = existingCartItem.docs[0];
       const updatedQuantity = existingDoc.data().quantity + quantity;
       await updateDoc(doc(db, "cart", existingDoc.id), {
@@ -37,7 +41,12 @@ export const addToCart = async (productId, quantity) => {
       });
     } else {
       // Product not in the cart, add a new item
-      await addDoc(cartRef, { productId, quantity });
+      await setDoc(doc(cartRef, `${productId.ASIN}T${auth.currentUser.uid}`), {
+        product: productId,
+        quantity,
+        searchTag: localStorage.getItem("search_tag"),
+        lowest_price: (Number(productId.price.replace("$", "")) / 100) * 90,
+      });
     }
   } catch (error) {
     throw Error(`${error}`);
