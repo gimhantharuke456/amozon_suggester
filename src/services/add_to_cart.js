@@ -47,6 +47,7 @@ export const addToCart = async (productId, quantity) => {
         searchTag: localStorage.getItem("search_tag"),
         lowest_price: (Number(productId.price.replace("$", "")) / 100) * 90,
       });
+      
     }
   } catch (error) {
     throw Error(`${error}`);

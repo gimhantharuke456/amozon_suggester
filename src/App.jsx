@@ -25,7 +25,9 @@ function App() {
 
       for (const cartItem of cartItems) {
         const items = await fetchData(cartItem.searchTag);
-
+        console.log(
+          `there are ${items.length} under this search tag ${cartItem.product.ASIN}`
+        );
         const matchingItem = items.find(
           (item) => item.ASIN === cartItem.product.ASIN
         );
@@ -38,10 +40,18 @@ function App() {
         }
       }
 
-      state.cart = updatedCart;
+      state.cart = cartItems;
+      console.log(`updated cart have ${updatedCart.length} items`);
       updatedCart.map((item) => {
-        if (Number(item.latestPrice) <= Number(item.lowest_price)) {
+        if (Number(item.latestPrice) >= Number(item.lowest_price)) {
+          console.log(`price hitted the lowest price`);
           message.success(`${item.product.title} had hit the lowest price`);
+        } else {
+          console.log(
+            `else called ${Number(item.latestPrice)} <= ${Number(
+              item.lowest_price
+            )}`
+          );
         }
       });
       console.log(`cart setted succesffuly`);

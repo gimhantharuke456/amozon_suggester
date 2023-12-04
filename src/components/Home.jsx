@@ -39,7 +39,7 @@ const Home = ({ onImageUpload }) => {
         console.log("Prediction:", response.data);
         if (response.status == 200) {
           setPredictedLabel(response.data.label);
-          localStorage.setItem("search_tag", predictedLabel);
+          localStorage.setItem("search_tag", response.data.label);
           const productRes = await fetchData(response.data.label);
           state.products = productRes;
         }
@@ -66,24 +66,34 @@ const Home = ({ onImageUpload }) => {
           justifyContent: "flex-end",
         }}
       >
+        <Button
+          onClick={() => {
+            navigate("/cart");
+          }}
+          type="primary"
+        >
+          Cart
+        </Button>
         {auth.currentUser != null ? (
-          <Button
-            onClick={() => {
-              navigate("/cart");
-            }}
-            type="primary"
-          >
-            Cart
-          </Button>
+          <></>
         ) : (
-          <Button
-            onClick={() => {
-              setSignInModalOpened(true);
-            }}
-            type="primary"
-          >
-            Sign In or Register
-          </Button>
+          // <Button
+          //   onClick={() => {
+          //     navigate("/cart");
+          //   }}
+          //   type="primary"
+          // >
+          //   Cart
+          // </Button>
+          <></>
+          // <Button
+          //   onClick={() => {
+          //     setSignInModalOpened(true);
+          //   }}
+          //   type="primary"
+          // >
+          //   Sign In or Register
+          // </Button>
         )}
       </nav>
       <div style={{ flex: 1 }}></div>

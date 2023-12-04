@@ -7,6 +7,7 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = async () => {
     try {
       await addToCart(product, 1);
+      console.log(`cart updated successfully`);
       state.cart.push({
         product: product,
         quantity: 1,
