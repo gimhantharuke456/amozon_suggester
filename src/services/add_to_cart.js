@@ -38,7 +38,7 @@ export const addToCart = async (productId, quantity) => {
       });
     } else {
       // Product not in the cart, add a new item
-      await setDoc(doc(cartRef, `${productId.ASIN}T${auth.currentUser.uid}`), {
+      await setDoc(doc(cartRef, `${productId.ASIN}`), {
         product: productId,
         quantity,
         searchTag: localStorage.getItem("search_tag"),
