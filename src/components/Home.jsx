@@ -31,7 +31,7 @@ const Home = ({ onImageUpload }) => {
 
         // Make a POST request to the Flask API
         const response = await axios.post(
-          "http://52.91.137.12/upload_image",
+          "http://34.229.49.134/upload_image",
           formData
         );
 
