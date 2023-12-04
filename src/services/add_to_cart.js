@@ -27,10 +27,7 @@ export const getCartItems = async () => {
 export const addToCart = async (productId, quantity) => {
   try {
     const cartRef = collection(db, "cart");
-    const q = query(
-      cartRef,
-      where("productId", "==", productId + " " + auth.currentUser.uid)
-    );
+    const q = query(cartRef, where("productId", "==", productId));
     const existingCartItem = await getDocs(q);
 
     if (!existingCartItem.empty) {
@@ -47,7 +44,6 @@ export const addToCart = async (productId, quantity) => {
         searchTag: localStorage.getItem("search_tag"),
         lowest_price: (Number(productId.price.replace("$", "")) / 100) * 90,
       });
-      
     }
   } catch (error) {
     throw Error(`${error}`);
